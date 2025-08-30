@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Business Empire - Monopoly Style Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="screen">
+        <div class="welcome-container">
+            <h1 class="game-title">🇮🇳 Indian Business Empire</h1>
+            <p class="game-subtitle">Build your business empire across India!</p>
+            <div class="welcome-content">
+                <div class="game-features">
+                    <h3>Game Features:</h3>
+                    <ul>
+                        <li>🏢 Famous Indian companies and cities</li>
+                        <li>🚂 Indian Railway stations</li>
+                        <li>🤖 AI opponents</li>
+                        <li>💾 Auto-save functionality</li>
+                        <li>📱 Mobile-friendly design</li>
+                    </ul>
+                </div>
+                <div class="welcome-actions">
+                    <button class="btn btn--primary btn--lg" onclick="showPlayerSetup()">New Game</button>
+                    <button class="btn btn--secondary btn--lg" onclick="loadGame()" id="loadGameBtn">Load Game</button>
+                    <button class="btn btn--outline btn--lg" onclick="showRules()">Game Rules</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Setup Screen -->
+    <div id="playerSetupScreen" class="screen hidden">
+        <div class="setup-container">
+            <h2>Setup Players</h2>
+            <div class="player-count-selector">
+                <label>Number of Players:</label>
+                <select id="playerCountSelect" class="form-control">
+                    <option value="2">2 Players</option>
+                    <option value="3">3 Players</option>
+                    <option value="4">4 Players</option>
+                </select>
+            </div>
+            <div id="playersConfig" class="players-config">
+                <!-- Player configurations will be inserted here -->
+            </div>
+            <div class="setup-actions">
+                <button class="btn btn--secondary" onclick="showWelcome()">Back</button>
+                <button class="btn btn--primary" onclick="startGame()">Start Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Rules Screen -->
+    <div id="rulesScreen" class="screen hidden">
+        <div class="rules-container">
+            <h2>Game Rules</h2>
+            <div class="rules-content">
+                <h3>Objective</h3>
+                <p>Become the wealthiest player by buying, renting, and selling properties!</p>
+                
+                <h3>How to Play</h3>
+                <ol>
+                    <li>Roll the dice to move around the board</li>
+                    <li>Buy properties when you land on them</li>
+                    <li>Collect rent from other players</li>
+                    <li>Draw cards from Chance and Community Chest</li>
+                    <li>Pay taxes and fees as required</li>
+                    <li>The last player standing wins!</li>
+                </ol>
+                
+                <h3>Special Spaces</h3>
+                <ul>
+                    <li><strong>START:</strong> Collect ₹2,000 salary</li>
+                    <li><strong>Railways:</strong> High-value transportation hubs</li>
+                    <li><strong>Utilities:</strong> Indian Railways & BSNL Telecom</li>
+                    <li><strong>Tax Spaces:</strong> Pay Income Tax or Super Tax</li>
+                    <li><strong>Jail:</strong> Skip turns or pay fine to get out</li>
+                </ul>
+            </div>
+            <button class="btn btn--primary" onclick="showWelcome()">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Main Game Screen -->
+    <div id="gameScreen" class="screen hidden">
+        <div class="game-layout">
+            <!-- Game Header -->
+            <div class="game-header">
+                <div class="current-player">
+                    <span id="currentPlayerInfo">Player 1's Turn</span>
+                </div>
+                <div class="game-actions">
+                    <button class="btn btn--sm btn--outline" onclick="saveGame()">Save Game</button>
+                    <button class="btn btn--sm btn--outline" onclick="showMenu()">Menu</button>
+                </div>
+            </div>
+
+            <!-- Players Panel -->
+            <div class="players-panel">
+                <div id="playersInfo" class="players-info">
+                    <!-- Player info cards will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Game Board -->
+            <div class="board-container">
+                <div id="gameBoard" class="game-board">
+                    <!-- Board spaces will be generated dynamically -->
+                </div>
+
+                <!-- Center Panel -->
+                <div class="center-panel">
+                    <div class="dice-container">
+                        <div class="dice" id="dice1">1</div>
+                        <div class="dice" id="dice2">1</div>
+                        <button class="btn btn--primary" id="rollDiceBtn" onclick="rollDice()">Roll Dice</button>
+                    </div>
+                    <div class="game-info">
+                        <div id="gameMessage" class="game-message">Welcome to Indian Business Empire!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button class="btn btn--outline" id="buyPropertyBtn" onclick="buyProperty()" disabled>Buy Property</button>
+                <button class="btn btn--outline" id="payRentBtn" onclick="payRent()" disabled>Pay Rent</button>
+                <button class="btn btn--outline" id="endTurnBtn" onclick="endTurn()" disabled>End Turn</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Modal -->
+    <div id="propertyModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="propertyTitle">Property Name</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="propertyDetails" class="property-details">
+                    <!-- Property details will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn--primary" id="modalActionBtn" onclick="modalAction()">Action</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Modal -->
+    <div id="cardModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="cardTitle">Card</h3>
+            </div>
+            <div class="modal-body">
+                <div id="cardText" class="card-text">
+                    <!-- Card text will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--primary" onclick="closeCardModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Game Over!</h3>
+            </div>
+            <div class="modal-body">
+                <div id="winnerInfo" class="winner-info">
+                    <!-- Winner information will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--primary" onclick="newGame()">New Game</button>
+                <button class="btn btn--secondary" onclick="showWelcome()">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification hidden">
+        <div id="notificationText"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+
